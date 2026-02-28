@@ -1,0 +1,58 @@
+{
+    "users": [
+        {
+            "id": "admin",
+            "name": "admin",
+            "role": "ADMIN",
+            "points": 0,
+            "className": "Admin",
+            "bio": "",
+            "avatarUrl": "logo.png",
+            "inventory": [],
+            "achievements": [],
+            "password_hash": "$2y$12$tkfeqQmvdYHe33e\/.JRyF.XFxCsEKl2iJ83Y.RjrRcdPkA3XZFP4a",
+            "must_set_password": false,
+            "theme": "neon"
+        }
+    ],
+    "parties": [],
+    "posts": [],
+    "challenges": [
+        {
+            "id": "c1",
+            "text": "Bois 3 gorgees sans les mains.",
+            "difficulty": "Facile"
+        },
+        {
+            "id": "c2",
+            "text": "Fais un discours de 30 secondes sur les escargots.",
+            "difficulty": "Moyen"
+        },
+        {
+            "id": "c3",
+            "text": "Imite le cri du dauphin pendant 10 secondes.",
+            "difficulty": "Moyen"
+        },
+        {
+            "id": "c4",
+            "text": "Cul sec ou karaoke solo pendant 1 minute.",
+            "difficulty": "Hardcore"
+        },
+        {
+            "id": "c5",
+            "text": "Fais trinquer 5 personnes differentes.",
+            "difficulty": "Facile"
+        },
+        {
+            "id": "c6",
+            "text": "Raconte la pire anecdote de soiree.",
+            "difficulty": "Moyen"
+        }
+    ],
+    "settings": {
+        "isMapEnabled": true
+    },
+    "activity": [],
+    "messages": [],
+    "achievementLibrary": []
+}
