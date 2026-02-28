@@ -300,18 +300,7 @@ function app_default_data(): array {
                 'theme' => 'neon',
             ],
         ],
-        'parties' => [
-            [
-                'id' => 'p_seed_allevard',
-                'name' => 'Point de Depart Allevard',
-                'date' => date('Y-m-d'),
-                'locationName' => '3 Rue de la Fontaine des Amoureux, Allevard, France',
-                'coverUrl' => 'logo.png',
-                'lat' => 45.392,
-                'lng' => 6.074,
-                'createdBy' => 'admin',
-            ],
-        ],
+        'parties' => [],
         'posts' => [],
         'challenges' => [
             ['id' => 'c1', 'text' => 'Bois 3 gorgees sans les mains.', 'difficulty' => 'Facile'],
@@ -1256,10 +1245,6 @@ if ($requestMethod === 'POST') {
         }
 
         $user = $data['users'][$idx];
-        if (($user['role'] ?? '') === ROLE_ADMIN) {
-            app_flash('error', 'Compte admin masque. Active le mode admin depuis le compte Guilhem.');
-            app_redirect();
-        }
         $needsPassword = !empty($user['password_hash']) || ($user['role'] === ROLE_ADMIN);
         if ($needsPassword) {
             $hash = (string) ($user['password_hash'] ?? '');
@@ -2156,7 +2141,8 @@ if ($requestMethod === 'POST') {
         }
 
         if (!$hasAdmin) {
-            $imported['users'][] = app_default_data()['users'][5];
+            $defaults = app_default_data();
+            $imported['users'][] = $defaults['users'][0];
         }
 
         app_save_data($imported);
@@ -2580,9 +2566,6 @@ if ($isAdmin) {
 
     <div class="w-full max-w-sm space-y-3">
       <?php foreach ($users as $user): ?>
-        <?php if (($user['role'] ?? '') === ROLE_ADMIN): ?>
-          <?php continue; ?>
-        <?php endif; ?>
         <button
           type="button"
           class="w-full flex items-center p-4 rounded-xl border transition-all duration-300 active:scale-95 group bg-neon-surface border-white/5 hover:border-neon-blue/50"
@@ -2725,7 +2708,9 @@ if ($isAdmin) {
                   </div>
                 </form>
 
-                <?php if ($canUnlockAdmin): ?>
+                <?php if ($isAdmin): ?>
+                  <a href="?page=admin" class="mt-3 block w-full text-center bg-neon-blue/70 text-white py-2 rounded font-bold tap-button">Ouvrir admin</a>
+                <?php elseif ($canUnlockAdmin): ?>
                   <form method="post" class="mt-3 js-action-form" data-async="true" data-async-kind="admin-toggle">
                     <input type="hidden" name="csrf" value="<?= h($csrf) ?>" />
                     <input type="hidden" name="action" value="toggle_admin_mode" />
@@ -4089,7 +4074,7 @@ if ($isAdmin) {
       document.body.appendChild(mapModal);
     }
 
-    appState.map = L.map('leafletMap', { zoomControl: true, attributionControl: false, zoomAnimation: true }).setView([45.392, 6.074], 14);
+    appState.map = L.map('leafletMap', { zoomControl: true, attributionControl: false, zoomAnimation: true }).setView([46.603354, 1.888334], 6);
     L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', { maxZoom: 19 }).addTo(appState.map);
     setTimeout(function() { appState.map.invalidateSize(); }, 200);
     window.addEventListener('resize', function() { if (appState.map) appState.map.invalidateSize(); });
@@ -4172,9 +4157,9 @@ if ($isAdmin) {
     appState.mapParties.forEach(function(party) { addPartyMarker(party); });
 
     [
-      { lat: 45.394, lng: 6.076, icon: '🍾', label: 'Planque de vodka' },
-      { lat: 45.390, lng: 6.072, icon: '🍺', label: 'Mini cave secrete' },
-      { lat: 45.3925, lng: 6.075, icon: '🥃', label: 'Shot mystere' }
+      { lat: 48.8566, lng: 2.3522, icon: '🍾', label: 'Planque de vodka' },
+      { lat: 45.7640, lng: 4.8357, icon: '🍺', label: 'Mini cave secrete' },
+      { lat: 43.2965, lng: 5.3698, icon: '🥃', label: 'Shot mystere' }
     ].forEach(function(egg) {
       var icon = L.divIcon({ className: 'easter-egg-icon', html: '<div style="font-size:20px;">' + egg.icon + '</div>', iconSize: [20, 20], iconAnchor: [10, 10] });
       L.marker([egg.lat, egg.lng], { icon: icon, opacity: 0.8 }).addTo(appState.map).bindPopup(egg.label);
